@@ -143,6 +143,9 @@ public final class KruizeObject {
     public String getTargetCluster() {
         return targetCluster;
     }
+     public String getTarget_cluster(){
+        return targetCluster;
+     }
 
     public void setTargetCluster(String targetCluster) {
         this.targetCluster = targetCluster;

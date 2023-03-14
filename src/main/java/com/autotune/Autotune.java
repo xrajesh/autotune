@@ -70,7 +70,7 @@ public class Autotune {
 
         try {
             server.start();
-            try {
+            /*try {
                 LOGGER.info("Checking DB connection...");
                 SessionFactory factory = KruizeHibernateUtil.getSessionFactory();
                 Session session = factory.openSession();
@@ -79,7 +79,7 @@ public class Autotune {
             } catch (Exception e) {
                 LOGGER.error("DB connection failed! due to {}", e.getMessage());
                 e.printStackTrace();
-            }
+            }*/
         } catch (Exception e) {
             LOGGER.error("Could not start the server!");
             e.printStackTrace();
