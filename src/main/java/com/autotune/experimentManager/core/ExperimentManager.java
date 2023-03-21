@@ -30,6 +30,7 @@ public class ExperimentManager {
 
     public static void launch(ServletContextHandler contextHandler) {
         LOGGER.info("EM version: testv1");
+        System.out.println("EM Version1");
         initializeEM();
         addEMServlets(contextHandler);
 

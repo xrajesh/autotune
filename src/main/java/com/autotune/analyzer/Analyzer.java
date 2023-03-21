@@ -29,6 +29,7 @@ import org.eclipse.jetty.servlet.ServletContextHandler;
 public class Analyzer {
     public static void start(ServletContextHandler contextHandler) {
         try {
+            System.out.println("Analyzer");
             InitializeDeployment.setup_deployment_info();
 
         } catch (Exception | K8sTypeNotSupportedException | MonitoringAgentNotSupportedException | MonitoringAgentNotFoundException e) {
@@ -36,10 +37,12 @@ public class Analyzer {
             // Current deployment not supported. Exit
             System.exit(1);
         }
+        System.out.println("Analyzer 2");
         Experimentator.start();
         KruizeDeployment kruizeDeployment = new KruizeDeployment();
 
         try {
+            System.out.println("Analyzer");
             addServlets(contextHandler);
             PerformanceProfilesDeployment.getPerformanceProfiles(); //  Performance profile should be called first
             KruizeDeployment.getKruizeObjects(kruizeDeployment);

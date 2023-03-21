@@ -19,17 +19,21 @@ import com.autotune.analyzer.serviceObjects.ContainerMetricsHelper;
 import com.autotune.analyzer.serviceObjects.CreateExperimentSO;
 import com.autotune.analyzer.serviceObjects.ListRecommendationsSO;
 import com.autotune.analyzer.serviceObjects.UpdateResultsSO;
+import com.autotune.analyzer.services.PerformanceProfileService;
 import com.autotune.common.data.result.*;
 import com.autotune.common.k8sObjects.ContainerObject;
 import com.autotune.common.k8sObjects.DeploymentObject;
 import com.autotune.common.k8sObjects.K8sObject;
 import com.autotune.common.k8sObjects.KruizeObject;
+import com.autotune.common.performanceProfiles.PerformanceProfile;
 
 import java.nio.charset.StandardCharsets;
 import java.security.MessageDigest;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+
+import javax.servlet.ServletException;
 
 /**
  * Contains methods that are of general utility in the codebase
@@ -179,6 +183,16 @@ public class Utils
 						deploymentObjectHashMap.put(k8sObject.getName(), deploymentObject);
 					}
 				}
+				PerformanceProfileService pps = new PerformanceProfileService();
+				try {
+					PerformanceProfile pf = pps.getPerformanceProfile(createExperimentSO.getPerformanceProfile());
+					kruizeObject.setSloInfo(pf.getSloInfo());
+				} catch (ServletException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+				createExperimentSO.getPerformanceProfile();
+				
 				kruizeObject.setDeployments(deploymentObjectHashMap);
 				kruizeObject.setExperimentName(createExperimentSO.getExperimentName());
 				kruizeObject.setApiVersion(createExperimentSO.getApiVersion());

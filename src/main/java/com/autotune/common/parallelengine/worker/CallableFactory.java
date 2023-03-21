@@ -29,11 +29,13 @@ public final class CallableFactory {
     private static final Logger LOGGER = LoggerFactory.getLogger(EMHandlerFactory.class);
 
     public <T extends AutotuneWorker> AutotuneWorker create(Class<T> classType) {
+        System.out.println("Autotune worker created");
         AutotuneWorker toReturn = null;
         try {
             Constructor<?> constructor = classType.getConstructor();
             toReturn = (AutotuneWorker) constructor.newInstance();
         } catch (Exception e) {
+            System.out.println(" Factory  not updated for Handler ");
             LOGGER.error("Factory class not updated for Handler : {} ", classType.getName());
         }
         return toReturn;

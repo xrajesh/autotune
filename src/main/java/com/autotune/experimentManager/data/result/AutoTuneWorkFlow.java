@@ -28,12 +28,15 @@ import java.util.LinkedHashMap;
  * Load depends on up flag wait_for_load
  */
 public class AutoTuneWorkFlow {
+
+    
     private static final Logger LOGGER = LoggerFactory.getLogger(AutoTuneWorkFlow.class);
     private final boolean wait_for_load;
     private final LinkedHashMap<String, String> iterationWorkflowMap;
     private final LinkedHashMap<String, String> trialWorkflowMap;
 
     public AutoTuneWorkFlow(boolean do_experiment, boolean do_monitoring, boolean wait_for_load, String trialResultURL) throws Exception {
+        System.out.println("Do workflow");
         LOGGER.debug("Do_experiment : {} , Do_monitoring : {}", do_experiment, do_monitoring);
         this.wait_for_load = wait_for_load;
         iterationWorkflowMap = new LinkedHashMap<String, String>();

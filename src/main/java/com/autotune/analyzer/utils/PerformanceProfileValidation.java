@@ -112,6 +112,7 @@ public class PerformanceProfileValidation {
      * @return ValidationResultData object containing status of the validations
      */
     public ValidationResultData validateMandatoryFieldsAndData(PerformanceProfile perfObj) {
+       System.out.println("in Perf validation");
         List<String> missingMandatoryFields = new ArrayList<>();
         ValidationResultData validationResultData = new ValidationResultData(false, null);
         String errorMsg;
@@ -236,6 +237,7 @@ public class PerformanceProfileValidation {
                 errorString.append(AnalyzerErrorConstants.AutotuneObjectErrors.INVALID_DIRECTION_FOR_SLO_CLASS);
             }
         }
+        System.out.println(errorString);
         // Check if function_variables is empty
         if (sloInfo.getFunctionVariables().isEmpty())
             errorString.append(AnalyzerErrorConstants.AutotuneObjectErrors.FUNCTION_VARIABLES_EMPTY);
@@ -308,6 +310,7 @@ public class PerformanceProfileValidation {
 
         // Check if objective_function is correctly formatted
         if (objFunctionType.equals(AnalyzerConstants.AutotuneObjectConstants.EXPRESSION)) {
+            System.out.println("before Eval2");
             if (expression.equals(AnalyzerConstants.NULL) || !new EvalExParser().validate(sloInfo.getObjectiveFunction().getExpression(), sloInfo.getFunctionVariables())) {
                 errorString.append(AnalyzerErrorConstants.AutotuneObjectErrors.INVALID_OBJECTIVE_FUNCTION);
             }

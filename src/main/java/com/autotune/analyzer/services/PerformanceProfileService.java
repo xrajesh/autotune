@@ -57,16 +57,25 @@ public class PerformanceProfileService extends HttpServlet {
     @Serial
     private static final long serialVersionUID = 1L;
     private static final Logger LOGGER = LoggerFactory.getLogger(PerformanceProfileService.class);
-    Map<String, PerformanceProfile> performanceProfilesMap;
+    private static Map<String, PerformanceProfile> performanceProfilesMap;
 
-
+    
     @Override
     public void init(ServletConfig config) throws ServletException {
         super.init(config);
-        this.performanceProfilesMap = (HashMap<String, PerformanceProfile>) getServletContext()
-                .getAttribute(AnalyzerConstants.PerformanceProfileConstants.PERF_PROFILE_MAP);
+        initPerformanceProfilesMap();
     }
 
+    private void initPerformanceProfilesMap() throws ServletException{
+        performanceProfilesMap = (HashMap<String, PerformanceProfile>) getServletContext()
+        .getAttribute(AnalyzerConstants.PerformanceProfileConstants.PERF_PROFILE_MAP);
+    }
+  
+    public PerformanceProfile getPerformanceProfile(String profileName) throws ServletException{
+    
+        return performanceProfilesMap.get(profileName);
+    }
+  
     /**
      * Validate and create new Performance Profile.
      *
@@ -106,7 +115,7 @@ public class PerformanceProfileService extends HttpServlet {
         response.setCharacterEncoding(CHARACTER_ENCODING);
         response.setStatus(HttpServletResponse.SC_OK);
         String gsonStr = "[]";
-        if (this.performanceProfilesMap.size() > 0) {
+        if (performanceProfilesMap.size() > 0) {
             Collection<PerformanceProfile> values = performanceProfilesMap.values();
             Gson gsonObj = new GsonBuilder()
                     .disableHtmlEscaping()

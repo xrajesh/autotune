@@ -101,6 +101,7 @@ public class CreateExperimentTrial extends HttpServlet {
             TrialInterface experimentAccess = new TrialInterfaceImpl(this.EMExperimentTrialMap);
             experimentAccess.addExperiments(experimentTrialList);
             if (null == experimentAccess.getErrorMessage()) {
+                System.out.println("submitting task"+ experimentAccess.toString());
                 submitTask();
             } else {
                 sendErrorResponse(response, null, experimentAccess.getHttpResponseCode(), experimentAccess.getErrorMessage());
@@ -139,6 +140,7 @@ public class CreateExperimentTrial extends HttpServlet {
 
     public void submitTask() {
         for (Object obj : EMExperimentTrialMap.values()) {
+            System.out.println("map size" + EMExperimentTrialMap.size());
             try {
                 /**
                  * Asynchronous task gets initiated, and it will spawn iteration manger for each experiment.

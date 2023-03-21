@@ -50,7 +50,7 @@ public class InitiateListener implements ServletContextListener {
 
     @Override
     public void contextInitialized(ServletContextEvent sce) {
-
+          System.out.println("Xavier Context Initialized");
         /*
           Kruize Experiment Manager thread configuration
          */
@@ -92,9 +92,11 @@ public class InitiateListener implements ServletContextListener {
 
         ScheduledThreadPoolExecutor createExperimentExecutorScheduled = new ScheduledThreadPoolExecutor(1);
         Runnable checkForNewExperiment = () -> {
+            System.out.println("Inside check for new experiment");
             KruizeDeployment.autotuneObjectMap.forEach(           //TOdo do pre filter where status=QUEUED before loop
                     (name, ko) -> {
                         if (ko.getStatus().equals(AnalyzerConstants.ExperimentStatus.QUEUED)) {
+                            System.out.println("Queed");
                             analyserExecutor.submit(
                                     new Runnable() {
                                         @Override

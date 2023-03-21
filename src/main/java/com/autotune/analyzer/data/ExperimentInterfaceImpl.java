@@ -41,6 +41,7 @@ public class ExperimentInterfaceImpl implements ExperimentInterface {
                             kruizeObject.getExperimentName(),
                             kruizeObject
                     );
+                    System.out.println(mainKruizeExperimentMap.toString());
                     LOGGER.debug("Added Experiment name : {} into main map.", kruizeObject.getExperimentName());
                 }
         );

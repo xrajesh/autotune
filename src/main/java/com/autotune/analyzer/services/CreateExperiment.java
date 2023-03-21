@@ -77,7 +77,9 @@ public class CreateExperiment extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         try {
+            System.out.println("in1");
             String inputData = request.getReader().lines().collect(Collectors.joining());
+            System.out.println(inputData);
             List<CreateExperimentSO> experimentSOList = Arrays.asList(new Gson().fromJson(inputData, CreateExperimentSO[].class));
             List<KruizeObject> kruizeExpList = new ArrayList<>();
             for (CreateExperimentSO createExperimentSO: experimentSOList) {
@@ -86,15 +88,18 @@ public class CreateExperiment extends HttpServlet {
                     kruizeExpList.add(kruizeObject);
                 }
             }
+            
             new ExperimentInitiator().validateAndAddNewExperiments(mainKruizeExperimentMap, kruizeExpList);
             //TODO: UX needs to be modified - Handle response for the multiple objects
             KruizeObject invalidKruizeObject = kruizeExpList.stream().filter((ko) -> (!ko.getValidationData().isSuccess())).findAny().orElse(null);
+            
             if (null == invalidKruizeObject) {
                 sendSuccessResponse(response, "Experiment registered successfully with Kruize.");
             } else {
                 LOGGER.error("Failed to create experiment due to {}", invalidKruizeObject.getValidationData().getMessage());
                 sendErrorResponse(response, null, HttpServletResponse.SC_BAD_REQUEST, invalidKruizeObject.getValidationData().getMessage());
             }
+            System.out.println("in2");
         } catch (Exception e) {
             e.printStackTrace();
             LOGGER.error("Unknown exception caught due to : " + e.getMessage());

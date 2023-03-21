@@ -141,6 +141,7 @@ public class ValidatePerformanceProfileObject
 
 		// Check if objective_function is correctly formatted
 		if (objFunctionType.equals(AnalyzerConstants.AutotuneObjectConstants.EXPRESSION)) {
+			System.out.println("Before Eval");
 			if (expression.equals(AnalyzerConstants.NULL) || !new EvalExParser().validate(sloInfo.getObjectiveFunction().getExpression(), sloInfo.getFunctionVariables())) {
 				errorString.append(AnalyzerErrorConstants.AutotuneObjectErrors.INVALID_OBJECTIVE_FUNCTION);
 			}

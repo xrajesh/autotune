@@ -86,7 +86,7 @@ public class EvalExParser implements AlgebraicParser {
         objFunctionOperators = objFunction.replaceAll("[a-zA-Z _]", "");
         if (objFunctionOperators.isEmpty())
             return true;
-
+System.out.println(objFunctionOperators);
         LOGGER.info("Objective Func Operators: {}", objFunctionOperators);
 
         //Remove extra whitespaces from the string

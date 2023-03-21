@@ -48,6 +48,8 @@ public class ExperimentInitiator {
             Map<String, KruizeObject> mainKruizeExperimentMap,
             List<KruizeObject> kruizeExpList
     ) {
+        System.out.println(mainKruizeExperimentMap.toString());
+        System.out.println(kruizeExpList.toString());
         ValidationResultData validationResultData = new ValidationResultData(false, null);
         try {
             ExperimentValidation validationObject = new ExperimentValidation(mainKruizeExperimentMap);

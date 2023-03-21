@@ -72,12 +72,14 @@ public class ExperimentValidation {
     public void validate(List<KruizeObject> kruizeExptList) {
         for (KruizeObject kruizeObject : kruizeExptList) {
             ValidationResultData validationResultData = validateMandatoryFields(kruizeObject);
+            System.out.println(validationResultData.isSuccess());
             if (validationResultData.isSuccess()) {
                 String expName = kruizeObject.getExperimentName();
                 String mode = kruizeObject.getMode();
                 String target_cluster = kruizeObject.getTargetCluster();
                 boolean proceed = false;
                 String errorMsg = "";
+                System.out.println(this.mainKruizeExperimentMAP.toString());
                 if (null == this.mainKruizeExperimentMAP.get(expName)) {
                     if (null != kruizeObject.getDeployment_name()) {
                         String nsDepName = kruizeObject.getNamespace().toLowerCase() + ":" + kruizeObject.getDeployment_name().toLowerCase();
@@ -107,6 +109,7 @@ public class ExperimentValidation {
                                 proceed = true;
                         }
                     } else {
+                        System.out.println(proceed);
                         proceed = true;
                     }
                 } else {
@@ -121,6 +124,7 @@ public class ExperimentValidation {
                     kruizeObject.setValidationData(new ValidationResultData(true, "Registered successfully with Kruize! View registered experiments at /listExperiments."));
                 }
             } else {
+                
                 kruizeObject.setValidationData(validationResultData);
                 markFailed(validationResultData.getMessage());
                 break;
@@ -164,8 +168,10 @@ public class ExperimentValidation {
         String expName = expObj.getExperimentName();
         errorMsg = String.format("Experiment Name : %s ", expName);
         mandatoryFields.forEach(
+            
                 mField -> {
                     String methodName = "get" + mField.substring(0, 1).toUpperCase() + mField.substring(1);
+                    System.out.println(methodName);
                     try {
                         Method getNameMethod = expObj.getClass().getMethod(methodName);
                         if (getNameMethod.invoke(expObj) == null) {
@@ -184,6 +190,7 @@ public class ExperimentValidation {
                             mField -> {
                                 String methodName = "get" + mField.substring(0, 1).toUpperCase() + mField.substring(1);
                                 try {
+                                    System.out.println(methodName);
                                     Method getNameMethod = expObj.getClass().getMethod(methodName);
                                     if (getNameMethod.invoke(expObj) == null) {
                                         missingMandatoryFields.add(mField);
@@ -196,6 +203,7 @@ public class ExperimentValidation {
                 }
                 for (String mField : mandatoryDeploymentSelector) {
                     String methodName = "get" + mField.substring(0, 1).toUpperCase() + mField.substring(1);
+                    System.out.println(methodName);
                     try {
                         Method getNameMethod = KruizeObject.class.getMethod(methodName);
                         if (getNameMethod.invoke(expObj) != null) {

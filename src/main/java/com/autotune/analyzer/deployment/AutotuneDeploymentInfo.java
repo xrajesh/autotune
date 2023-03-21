@@ -66,6 +66,7 @@ public class AutotuneDeploymentInfo {
     }
 
     public static String getMonitoringAgentEndpoint() {
+        System.out.println("Thanos endpoint " + monitoringAgentEndpoint);
         return monitoringAgentEndpoint;
     }
 
@@ -83,6 +84,8 @@ public class AutotuneDeploymentInfo {
     }
 
     public static void setClusterType(String clusterType) throws ClusterTypeNotSupportedException {
+        System.out.println(clusterType);
+        LOGGER.info("xdebug"+ clusterType );
         if (clusterType != null)
             clusterType = clusterType.toLowerCase();
 
@@ -140,6 +143,7 @@ public class AutotuneDeploymentInfo {
     }
 
     public static String getMonitoringAgent() {
+        System.out.println("Xav Moni Agent "+monitoringAgent );
         return monitoringAgent;
     }
 

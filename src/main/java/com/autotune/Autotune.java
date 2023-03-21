@@ -59,12 +59,15 @@ public class Autotune {
         String autotuneMode = System.getenv(AutotuneConstants.StartUpMode.AUTOTUNE_MODE);
 
         if (null != autotuneMode) {
+			System.out.println("x start normal mode 1");
             if (autotuneMode.equalsIgnoreCase(AutotuneConstants.StartUpMode.EM_ONLY_MODE)) {
                 startAutotuneEMOnly(context);
             } else {
+				
                 startAutotuneNormalMode(context);
             }
         } else {
+			System.out.println("x start normal mode 2");
             startAutotuneNormalMode(context);
         }
 
