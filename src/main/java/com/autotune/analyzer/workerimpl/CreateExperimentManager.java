@@ -29,6 +29,7 @@ import com.autotune.common.experiments.ExperimentTrial;
 import com.autotune.common.experiments.ResourceDetails;
 import com.autotune.common.experiments.TrialDetails;
 import com.autotune.common.experiments.TrialInfo;
+import com.autotune.common.experiments.TrialSettings;
 import com.autotune.common.k8sObjects.ContainerObject;
 import com.autotune.common.k8sObjects.DeploymentObject;
 import com.autotune.common.k8sObjects.KruizeObject;
@@ -36,9 +37,12 @@ import com.autotune.common.k8sObjects.Metric;
 import com.autotune.common.k8sObjects.SloInfo;
 import com.autotune.common.parallelengine.executor.AutotuneExecutor;
 import com.autotune.common.parallelengine.worker.AutotuneWorker;
+import com.autotune.experimentManager.data.result.TrialIterationMetaData;
+import com.autotune.experimentManager.data.result.TrialMetaData;
 import com.autotune.utils.HttpUtils;
 import com.autotune.utils.ServerContext;
 import com.autotune.utils.TrialHelpers;
+
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -47,7 +51,9 @@ import javax.servlet.ServletContext;
 
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.sql.Timestamp;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.Random;
 
@@ -125,15 +131,16 @@ TrialInfo trialInfo = new TrialInfo(ko.getExperimentId(),
         DeploymentPolicy deploymentPolicy = new DeploymentPolicy("ACM");
         DeploymentSettings deploymentSettings = new DeploymentSettings(deploymentPolicy,
                 deploymentTracking);
-        ExperimentSettings experimentSettings = new ExperimentSettings(null,
+           TrialSettings ts = new     TrialSettings("1",null,null,null,null);
+        ExperimentSettings experimentSettings = new ExperimentSettings(ts,
         deploymentSettings, false, true, false);
 
         DatasourceInfo datasourceInfo = new DatasourceInfo("MONITORING_AGENT",
         "MONITORING_AGENT_ENDPOINT");
         System.out.println("DATASOURCEINFO IS: " + datasourceInfo);
 HashMap<String, DatasourceInfo> datasourceInfoHashMap = new HashMap<>();
-datasourceInfoHashMap.put("MONITORING_AGENT", datasourceInfo);  //Change key value as per YAML input
-
+datasourceInfoHashMap.put(AutotuneDeploymentInfo.getMonitoringAgent(), datasourceInfo);  //Change key value as per YAML input
+  //experimentTrial.getExperimentSettings().getTrialSettings().getTrialIterations()
          HashMap<String, HashMap<String, Metric>> containersMetricsHashMap = new HashMap<String, HashMap<String, Metric>>();
          for (DeploymentObject depobj : ko.getDeployments().values()){
           for (ContainerObject conobj : depobj.getContainers().values()){
@@ -145,7 +152,16 @@ datasourceInfoHashMap.put("MONITORING_AGENT", datasourceInfo);  //Change key val
             containersMetricsHashMap.put(conobj.getContainer_name(), metricsHashMap);
           }
          }
+         TrialIterationMetaData timd = new TrialIterationMetaData();
+         timd.setIterationNumber(0);
+         timd.setStatus(com.autotune.experimentManager.utils.EMUtil.EMExpStatus.IN_PROGRESS);
+         LinkedHashMap<Integer, TrialIterationMetaData> it = new LinkedHashMap<Integer, TrialIterationMetaData>();
+         it.put(0, timd);
+         TrialMetaData trialMetaData = new TrialMetaData();
+                 trialMetaData.setCreationDate(new Timestamp(System.currentTimeMillis()));
+                 trialMetaData.setIterations(it);
          TrialDetails td = new  TrialDetails("0", null);
+         td.setTrialMetaData(trialMetaData);
          ResourceDetails rd = new ResourceDetails(ko.getNamespace(), ko.getDeployment_name());
          HashMap<String, TrialDetails>  trailDetails  = new HashMap<String, TrialDetails> ();
          trailDetails.put(ko.getExperimentId(), td);

@@ -76,14 +76,15 @@ public class IterationManager implements AutotuneWorker {
      */
     private void findAndSubmitTask(ExperimentTrial experimentTrial, AutotuneExecutor autotuneExecutor, ServletContext context) {
         AtomicBoolean taskSubmitted = new AtomicBoolean(false);
-        if (experimentTrial.getStatus().equals(EMUtil.EMExpStatus.IN_PROGRESS)) {
+        if (experimentTrial.getStatus().equals(EMUtil.EMExpStatus.IN_PROGRESS)) { 
             System.out.println("in progress");
             experimentTrial.getTrialDetails().forEach((trialNum, trialDetails) -> {
                 System.out.println("in progress2");
                 if (taskSubmitted.get()) return;
                 System.out.println("not returned in progress2");
                 if (proceed(trialDetails)) {
-                    EMStatusUpdateHandler.updateTrialMetaDataStatus(experimentTrial, trialDetails);
+                    //EMStatusUpdateHandler.updateTrialMetaDataStatus(experimentTrial, trialDetails);
+                   System.out.println(trialDetails.getTrialMetaData());
                     trialDetails.getTrialMetaData().getIterations().forEach((iteration, iterationTrialMetaDetails) -> {
                         System.out.println("in progress 3");
                         if (taskSubmitted.get()) return;
@@ -124,7 +125,7 @@ public class IterationManager implements AutotuneWorker {
                             EMHandlerInterface theWorker = null;
                             theWorker = new EMHandlerFactory().create(stepClassName);
                             if (null != theWorker) {
-                                System.out.println("in progress executed");
+                                System.out.println("in progress executed"+ stepClassName);
                                 theWorker.execute(experimentTrial,
                                         trialDetails,
                                         null,
@@ -163,13 +164,15 @@ public class IterationManager implements AutotuneWorker {
             }
             System.out.println("x workflow 2" + autoTuneWorkFlow.toString());
             //update Trial level metadata
-         /*    experimentTrial.getTrialDetails().forEach((trailNum, trialDetail) -> {
+             experimentTrial.getTrialDetails().forEach((trailNum, trialDetail) -> {
                 System.out.println("updating trail level");
                 TrialMetaData trialMetaData = trialDetail.getTrialMetaData();
                 if (trialMetaData.getStatus().equals(EMUtil.EMExpStatus.QUEUED)) {
+                    System.out.println("updating trail level1" + experimentTrial.getExperimentSettings().getTrialSettings());
                     int iterationCount = Integer.parseInt(experimentTrial.getExperimentSettings().getTrialSettings().getTrialIterations());
                     LinkedHashMap<Integer, TrialIterationMetaData> trialIterationMap = new LinkedHashMap<>();
                     LinkedHashMap<Integer, LinkedHashMap<String, StepsMetaData>> iterationWorkflow = new LinkedHashMap<>();
+                    System.out.println("updating trail level1.1");
                     IntStream.rangeClosed(1, iterationCount).forEach((iteration) -> {
                         TrialIterationMetaData trialIterationMetaData = new TrialIterationMetaData();
                         LinkedHashMap<String, StepsMetaData> stepsMetaDataLinkedHashMap = new LinkedHashMap<>();
@@ -183,6 +186,7 @@ public class IterationManager implements AutotuneWorker {
                                     );
                                 }
                         );
+                        System.out.println("updating trail level2");
                         trialIterationMetaData.setWorkFlow(stepsMetaDataLinkedHashMap);
                         trialIterationMetaData.setStatus(EMUtil.EMExpStatus.QUEUED);
                         trialIterationMetaData.setIterationNumber(iteration);
@@ -200,11 +204,12 @@ public class IterationManager implements AutotuneWorker {
                                 );
                             }
                     );
+                    System.out.println("updating trail level3");
                     trialMetaData.setTrialWorkflow(trialWorkflowSteps);
                     trialMetaData.setStatus(EMUtil.EMExpStatus.QUEUED);
                     trialDetail.setTrialMetaData(trialMetaData);
                 }
-            }); */
+            }); 
             experimentTrial.setStatus(EMUtil.EMExpStatus.IN_PROGRESS);
             LOGGER.debug("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~Name:{}-Status:{}~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~", experimentTrial.getExperimentName(), EMUtil.EMExpStatus.IN_PROGRESS);
             if (null == experimentTrial.getExperimentMetaData().getBeginTimestamp())

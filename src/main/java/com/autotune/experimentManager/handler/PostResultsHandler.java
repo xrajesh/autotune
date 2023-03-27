@@ -58,12 +58,13 @@ public class PostResultsHandler implements EMHandlerInterface {
              * Implement PostResultsHandler Logic
              */
             HashMap<String, Metric> podMetricsMap = experimentTrial.getPodMetricsHashMap();
+            if (podMetricsMap!=null){
             for (Map.Entry<String, Metric> podMetricEntry : podMetricsMap.entrySet()) {
                 Metric podMetric = podMetricEntry.getValue();
                 if (null != podMetric.getEmMetricResult() && Float.MIN_VALUE != podMetric.getEmMetricResult().getEmMetricGenericResults().getMean()) {
                     LOGGER.info("Mean result for {} is {} ", podMetric.getName(), podMetric.getEmMetricResult().getEmMetricGenericResults().getMean());
                 }
-            }
+            }}
             HashMap<String, HashMap<String, Metric>> containersMap = experimentTrial.getContainerMetricsHashMap();
             for (Map.Entry<String, HashMap<String, Metric>> containerMapEntry : containersMap.entrySet()) {
                 for (Map.Entry<String, Metric> containerMetricEntry : containerMapEntry.getValue().entrySet()) {

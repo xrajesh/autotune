@@ -128,6 +128,7 @@ public class InitiateListener implements ServletContextListener {
 
         ScheduledThreadPoolExecutor updateResultsExecutorScheduled = new ScheduledThreadPoolExecutor(1);
         Runnable checkForNewResults = () -> {
+            System.out.println("Inside check for updateResults experiment");
             KruizeDeployment.autotuneObjectMap.forEach(           //TOdo do pre filter where status=IN_PROGRESS before loop
                     (name, ko) -> {
                         if (ko.getStatus().equals(AnalyzerConstants.ExperimentStatus.IN_PROGRESS)) {

@@ -60,6 +60,7 @@ public class MetricsValidator {
      */
     public CommonUtils.QueryValidity validateTrialMetrics(ExperimentTrial experimentTrial) {
         HashMap<String, Metric> podMetrics = experimentTrial.getPodMetricsHashMap();
+        if (podMetrics !=null){
         for (Map.Entry<String, Metric> podMetricEntry : podMetrics.entrySet()) {
             Metric podMetric = podMetricEntry.getValue();
             CommonUtils.QueryValidity validity = validateBaseMetricFeatures(podMetric, experimentTrial.getExperimentSettings().getTrialSettings());
@@ -71,6 +72,7 @@ public class MetricsValidator {
                 return validity;
             }
         }
+    }
         HashMap<String , HashMap<String, Metric>> containerMetricMap = experimentTrial.getContainerMetricsHashMap();
         for (Map.Entry<String, HashMap<String, Metric>> containerMetricMapEntry : containerMetricMap.entrySet()) {
             HashMap<String, Metric> containerMetrics = containerMetricMapEntry.getValue();
