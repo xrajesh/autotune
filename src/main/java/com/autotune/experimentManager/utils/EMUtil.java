@@ -144,6 +144,7 @@ public class EMUtil {
         deploymentResultData.setDeployment_name(experimentTrial.getResourceDetails().getDeploymentName());
         deploymentResultData.setNamespace(experimentTrial.getResourceDetails().getNamespace());
         List<PodResultData> podResultDataList = new ArrayList<>();
+        if (podMetricsMap !=null){
         for (Map.Entry<String, Metric> podMetricEntry : podMetricsMap.entrySet()) {
             Metric podMetric = podMetricEntry.getValue();
             if (null != podMetric.getEmMetricResult() && Float.MIN_VALUE != podMetric.getEmMetricResult().getEmMetricGenericResults().getMean()) {
@@ -158,6 +159,7 @@ public class EMUtil {
                 podResultDataList.add(podResultData);
             }
         }
+    }
         List<Containers> containersList = new ArrayList<>();
         for (Map.Entry<String, HashMap<String, Metric>> containerMapEntry : containersMap.entrySet()) {
             Containers containers = new Containers();

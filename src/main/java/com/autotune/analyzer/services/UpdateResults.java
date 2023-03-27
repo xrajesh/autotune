@@ -65,6 +65,7 @@ public class UpdateResults extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         try {
             String inputData = request.getReader().lines().collect(Collectors.joining());
+            System.out.println(inputData);
             List<ExperimentResultData> experimentResultDataList = new ArrayList<ExperimentResultData>();
             List<UpdateResultsSO> updateResultsSOList = Arrays.asList(new Gson().fromJson(inputData, UpdateResultsSO[].class));
             for (UpdateResultsSO updateResultsSO : updateResultsSOList) {
