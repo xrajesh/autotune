@@ -15,7 +15,10 @@
  *******************************************************************************/
 package com.autotune.common.experiments;
 
+import java.net.MalformedURLException;
 import java.net.URL;
+
+import org.slf4j.LoggerFactory;
 
 /**
  * This Data object is used to store information about metric collectors like Prometheus, LogicMonitor, Dynatrace, Amazon Timestream etc
@@ -26,13 +29,30 @@ import java.net.URL;
  * }
  */
 public class DatasourceInfo {
-    private final String provider;
-    private final URL url;
+    private final String provider; //monitoringAgent
+    private final URL url; //monitoringAgentEndpoint
 
-    public DatasourceInfo(String provider, URL url) {
-        this.provider = provider;
-        this.url = url;
-    }
+
+    private static final org.slf4j.Logger LOGGER = LoggerFactory.getLogger(DatasourceInfo.class);
+    
+    public DatasourceInfo(String providerEnvVar, String urlEnvVar) {
+        String provider = System.getenv(providerEnvVar);
+        String urlString = System.getenv(urlEnvVar);
+   
+        if (provider == null || urlString == null) {
+           throw new IllegalArgumentException("Both provider and url environment variables must be set.");
+       }
+   
+       URL url = null;
+           try {
+               url = new URL(urlString);
+           } catch (MalformedURLException e) {
+               LOGGER.error( "Error creating URL: " + e.getMessage());
+           }
+   
+           this.provider = provider;
+           this.url = url;
+       }
 
     public String getProvider() {
         return provider;

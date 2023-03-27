@@ -144,13 +144,12 @@ public class TrialHelpers {
                 trialNumber,
                 trialResultUrl.toString());
 
-        DatasourceInfo datasourceInfo = new DatasourceInfo(AutotuneDeploymentInfo.getMonitoringAgent(),
-                new URL(AutotuneDeploymentInfo.getMonitoringAgentEndpoint()));
-        HashMap<String, DatasourceInfo> datasourceInfoHashMap = new HashMap<>();
-        datasourceInfoHashMap.put(AutotuneDeploymentInfo.getMonitoringAgent(), datasourceInfo);  //Change key value as per YAML input
-        DeploymentTracking deploymentTracking = new DeploymentTracking();
-        DeploymentSettings deploymentSettings = new DeploymentSettings(deploymentPolicy,
-                deploymentTracking);
+                DatasourceInfo datasourceInfo = new DatasourceInfo("MONITORING_AGENT", "MONITORING_AGENT_ENDPOINT");
+                HashMap<String, DatasourceInfo> datasourceInfoHashMap = new HashMap<>();
+                datasourceInfoHashMap.put("MONITORING_AGENT", datasourceInfo);  //Change key value as per YAML input
+                DeploymentTracking deploymentTracking = new DeploymentTracking();
+                DeploymentSettings deploymentSettings = new DeploymentSettings(deploymentPolicy,
+                        deploymentTracking);
 
         boolean do_experiments = true;
         if (kruizeObject.getMode().equals("monitor")) {

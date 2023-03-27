@@ -135,15 +135,9 @@ TrialInfo trialInfo = new TrialInfo(ko.getExperimentId(),
         ExperimentSettings experimentSettings = new ExperimentSettings(ts,
         deploymentSettings, false, true, false);
 
-DatasourceInfo datasourceInfo = null;
-try {
-    datasourceInfo = new DatasourceInfo(AutotuneDeploymentInfo.getMonitoringAgent(),
-            //new URL(AutotuneDeploymentInfo.getMonitoringAgentEndpoint()));
-            new URL("http://localhost:10901"));
-} catch (MalformedURLException e) {
-    // TODO Auto-generated catch block
-    e.printStackTrace();
-}
+        DatasourceInfo datasourceInfo = new DatasourceInfo("MONITORING_AGENT",
+        "MONITORING_AGENT_ENDPOINT");
+        System.out.println("DATASOURCEINFO IS: " + datasourceInfo);
 HashMap<String, DatasourceInfo> datasourceInfoHashMap = new HashMap<>();
 datasourceInfoHashMap.put(AutotuneDeploymentInfo.getMonitoringAgent(), datasourceInfo);  //Change key value as per YAML input
   //experimentTrial.getExperimentSettings().getTrialSettings().getTrialIterations()
